@@ -1,0 +1,41 @@
+version: "2"
+services:
+  mongo:
+    image: "bitnami/mongodb:latest"
+    container_name: "dwa-studio-mongo-db"
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGODB_ROOT_PASSWORD: "MONGODB_ROOT_PASSWORD"
+      MONGODB_USERNAME: "user"
+      MONGODB_PASSWORD: "MONGODB_PASSWORD"
+      MONGODB_DATABASE: "db_name"
+    volumes:
+      - ./mongo:/bitnami
+  api:
+    build: ./parse-server
+    image: dwa-studio/parse-server
+    container_name: "dwa-studio-parse-server"
+    #décommenter pour lancer en dev
+    #command: "nodemon --exec npm run dev"
+    restart: always
+    ports:
+      - "1337:1337"
+    environment:
+      PARSE_MOUNT: "/parse"
+      PORT: 1337
+      DATABASE_URI: mongodb://user:MONGODB_PASSWORD@mongo:27017/db_name
+      APP_ID: "APP_ID"
+      MASTER_KEY: "MASTER"
+      SERVER_URL: "http://localhost:1337/parse"
+      LOG_LEVEL: "error"
+      ALLOW_INSECURE_HTTP_DASHBOARD: "true"
+      APP_NAME: "Parse Server Sample"
+      DASHBOARD_USER: "User"
+      DASHBOARD_PASSWORD: "password"
+    depends_on:
+      - mongo
+    #décommenter pour lancer en dev
+    #volumes:
+    #  - ./parse-server/server/:/parse/server

@@ -1,0 +1,22 @@
+{
+  "name": "parse-server-sample",
+  "version": "1.0.0",
+  "description": "Basic Parse Server Sample",
+  "author": "Thibault MOCELLIN (https://www.dwastudio.fr)",
+  "dependencies": {
+    "express": "^4.16.4",
+    "parse-dashboard": "^1.2.0",
+    "parse-server": "^3.1.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "scripts": {
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "babel -d ./build ./server -s",
+    "build": "npm run clean && npm run build-server",
+    "start": "npm run build && node ./build/index.js",
+    "dev": "babel-node ./server/index.js"
+  }
+}
